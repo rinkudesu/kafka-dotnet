@@ -4,5 +4,5 @@ namespace Rinkudesu.Kafka.Dotnet.IntegrationTests;
 
 public class MockKafkaMessage : GenericKafkaMessage
 {
-    public string MockMessage { get; set; }
+    public string MockMessage { get; set; } = string.Empty;
 }

@@ -35,7 +35,7 @@ public sealed class KafkaConnectionTests : IAsyncDisposable
         _subscriber.BeginHandle(handleCancellationToken.Token);
         await _producer.Produce(_messageHandler.Topic, mockMessage, handleCancellationToken.Token);
         await Task.Delay(TimeSpan.FromSeconds(10), CancellationToken.None); //wait for messages to definitely circulate
-        await _subscriber.StopHandle();
+        await _subscriber.Unsubscribe();
 
         Assert.Equal(1, _messageHandler.HandleCount);
         Assert.NotNull(_messageHandler.LastMessage);
@@ -57,7 +57,7 @@ public sealed class KafkaConnectionTests : IAsyncDisposable
         _subscriber.BeginHandle(handleCancellationToken.Token);
         _producer.ProduceBulk(_messageHandler.Topic, messages, TimeSpan.FromSeconds(5));
         await Task.Delay(TimeSpan.FromSeconds(10), CancellationToken.None); //wait for messages to definitely circulate
-        await _subscriber.StopHandle();
+        await _subscriber.Unsubscribe();
 
         Assert.Equal(msgCount, _messageHandler.HandleCount);
     }

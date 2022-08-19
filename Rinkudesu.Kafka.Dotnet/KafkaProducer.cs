@@ -1,11 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
 using Confluent.Kafka;
 using Rinkudesu.Kafka.Dotnet.Base;
 using Rinkudesu.Kafka.Dotnet.Exceptions;
 
 namespace Rinkudesu.Kafka.Dotnet;
 
-[ExcludeFromCodeCoverage]
 public class KafkaProducer : IKafkaProducer
 {
     private readonly IProducer<Null, string> _producer;

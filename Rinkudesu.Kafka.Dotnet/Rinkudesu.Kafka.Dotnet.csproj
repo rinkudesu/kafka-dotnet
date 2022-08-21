@@ -5,6 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AnalysisMode>All</AnalysisMode>
+        
+        <Title>Rinkudesu.Kafka.Dotnet</Title>
+        <Authors>Rinkudesu</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Description>Library for Apache Kafka integration intended for use with Rinkudesu.</Description>
+        <RepositoryUrl>https://github.com/rinkudesu/kafka-dotnet.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -14,9 +21,6 @@
     <ItemGroup>
         <PackageReference Include="Confluent.Kafka" Version="1.9.2" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Rinkudesu.Kafka.Dotnet.Base\Rinkudesu.Kafka.Dotnet.Base.csproj" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     </ItemGroup>
 </Project>

@@ -1,0 +1,30 @@
+name: Push nuget
+on:
+  push:
+    tags: [ '[0-9]+.[0-9]+.[0-9]+' ]
+jobs:
+  nuget-publish:
+    name: Build and push nuget
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start Kafka Docker containers
+        run: |
+          wget -O ./kafka.docker-compose.yml https://raw.githubusercontent.com/rinkudesu/kafka-docker/main/docker-compose.yml
+          docker compose -f kafka.docker-compose.yml up -d
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore, build, test
+        run: |
+          dotnet restore
+          dotnet build -c Release --no-restore
+          dotnet test -c Release --no-build
+
+      - name: Pack nuget
+        run: dotnet pack --no-build -p:PackageVersion=${{ GITHUB_REF_NAME }} -c Release -o ./out
+
+      - name: Push to nuget.org
+        run: dotnet nuget push "./out/*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json

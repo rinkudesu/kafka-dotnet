@@ -12,6 +12,7 @@
         <Description>Library for Apache Kafka integration intended for use with Rinkudesu.</Description>
         <RepositoryUrl>https://github.com/rinkudesu/kafka-dotnet.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -22,5 +23,9 @@
         <PackageReference Include="Confluent.Kafka" Version="1.9.2" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ jobs:
           docker compose -f kafka.docker-compose.yml up -d
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 6.0.x
 

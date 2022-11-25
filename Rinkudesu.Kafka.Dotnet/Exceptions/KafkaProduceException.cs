@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Rinkudesu.Kafka.Dotnet.Base;
+#pragma warning disable CS1591
 
 namespace Rinkudesu.Kafka.Dotnet.Exceptions;
 

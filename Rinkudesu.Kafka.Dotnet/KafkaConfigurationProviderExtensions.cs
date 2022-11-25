@@ -4,9 +4,15 @@ using Rinkudesu.Kafka.Dotnet.Base;
 
 namespace Rinkudesu.Kafka.Dotnet;
 
+/// <summary>
+/// Provides extension methods for <see cref="KafkaConfigurationProvider"/>
+/// </summary>
 [ExcludeFromCodeCoverage]
 public static class KafkaConfigurationProviderExtensions
 {
+    /// <summary>
+    /// Generates Kafka connection config used by <see cref="IKafkaProducer"/>.
+    /// </summary>
     public static ProducerConfig GetProducerConfig(this KafkaConfigurationProvider configurationProvider)
         => SetUserPassword(new ProducerConfig
         {
@@ -14,6 +20,9 @@ public static class KafkaConfigurationProviderExtensions
             ClientId = configurationProvider.ClientId
         }, configurationProvider);
 
+    /// <summary>
+    /// Generates Kafka connection config used by <see cref="IKafkaSubscriber{T}"/>.
+    /// </summary>
     public static ConsumerConfig GetConsumerConfig(this KafkaConfigurationProvider configurationProvider) =>
         SetUserPassword(new ConsumerConfig
         {

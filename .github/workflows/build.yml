@@ -12,8 +12,7 @@ jobs:
     steps:
       - name: Start Kafka Docker containers
         run: |
-          wget -O ./kafka.docker-compose.yml https://raw.githubusercontent.com/rinkudesu/kafka-docker/main/docker-compose.yml
-          docker compose -f kafka.docker-compose.yml up -d
+          docker compose -f ./Rinkudesu.Kafka.Dotnet.IntegrationTests/docker-compose.yml up -d
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:

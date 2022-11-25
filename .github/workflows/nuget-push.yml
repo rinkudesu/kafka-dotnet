@@ -12,8 +12,7 @@ jobs:
 
       - name: Start Kafka Docker containers
         run: |
-          wget -O ./kafka.docker-compose.yml https://raw.githubusercontent.com/rinkudesu/kafka-docker/main/docker-compose.yml
-          docker compose -f kafka.docker-compose.yml up -d
+          docker compose -f ./Rinkudesu.Kafka.Dotnet.IntegrationTests/docker-compose.yml up -d
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3

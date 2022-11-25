@@ -10,10 +10,6 @@ jobs:
     name: Build and test with Sonar
     runs-on: ubuntu-latest
     steps:
-      - name: Start Kafka Docker containers
-        run: |
-          wget -O ./kafka.docker-compose.yml https://raw.githubusercontent.com/rinkudesu/kafka-docker/main/docker-compose.yml
-          docker compose -f kafka.docker-compose.yml up -d
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
@@ -22,6 +18,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Start Kafka Docker containers
+        run: |
+          docker compose -f ./Rinkudesu.Kafka.Dotnet.IntegrationTests/docker-compose.yml up -d
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:

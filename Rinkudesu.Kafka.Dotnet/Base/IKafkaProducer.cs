@@ -25,10 +25,11 @@ public interface IKafkaProducer : IDisposable
     /// <param name="messages">The collection of messages.</param>
     /// <param name="waitTime">Maximum time to wait for all messages to be sent. If <see langword="null"/>, an arbitrary value will be used.</param>
     /// <typeparam name="T">Type of the messages to enqueue.</typeparam>
+    /// <returns><c>true</c> if all messages were successfully flushed to Kafka, <c>false</c> if some still remain.</returns>
     /// <remarks>
     /// This message should be faster than <see cref="Produce{T}"/> as it does not wait for any single message to be enqueued.
     /// Due to this fact, it should only be used when speed is a major concern.
     /// If many messages need to be sent, but speed is not an issue in the relevant scenario, consider using <see cref="Produce{T}"/> in a loop instead.
     /// </remarks>
-    void ProduceBulk<T>(string topic, IEnumerable<T> messages, TimeSpan? waitTime = null) where T : GenericKafkaMessage;
+    bool ProduceBulk<T>(string topic, IEnumerable<T> messages, TimeSpan? waitTime = null) where T : GenericKafkaMessage;
 }

@@ -19,7 +19,8 @@ public class KafkaProducer : IKafkaProducer
     {
         try
         {
-            await _producer.ProduceAsync(topic, message.GetMessage(), cancellationToken).ConfigureAwait(false);
+            var result = await _producer.ProduceAsync(topic, message.GetMessage(), cancellationToken).ConfigureAwait(false);
+            if (result.Status != PersistenceStatus.Persisted) throw new KafkaProduceException("Failed to persist message.");
         }
         catch (ProduceException<Null, string> e)
         {
@@ -32,8 +33,9 @@ public class KafkaProducer : IKafkaProducer
     /// Thrown when sending of at least one message has failed. Will contain <see cref="KafkaProduceException"/> thrown during sending.
     /// Note that all messages will attempt to send, regardless of when the first exception was thrown.
     /// </exception>
-    public virtual void ProduceBulk<T>(string topic, IEnumerable<T> messages, TimeSpan? waitTime = null) where T : GenericKafkaMessage
+    public virtual bool ProduceBulk<T>(string topic, IEnumerable<T> messages, TimeSpan? waitTime = null) where T : GenericKafkaMessage
     {
+        bool flushed;
         var exceptions = new LinkedList<KafkaProduceException>();
         try
         {
@@ -51,10 +53,11 @@ public class KafkaProducer : IKafkaProducer
         }
         finally
         {
-            _producer.Flush(waitTime ?? TimeSpan.FromSeconds(10));
+            flushed = _producer.Flush(waitTime ?? TimeSpan.FromSeconds(10)) == 0;
         }
 
         if (exceptions.Any()) throw new AggregateException(exceptions);
+        return flushed;
     }
 
     protected virtual void Dispose(bool disposing)

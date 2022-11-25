@@ -6,6 +6,7 @@ using Rinkudesu.Kafka.Dotnet.Base;
 
 namespace Rinkudesu.Kafka.Dotnet;
 
+/// <inheritdoc/>
 public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMessage
 {
 #pragma warning disable CA2213 // this is disposed, but for some reason dotnet warnings are still issued
@@ -22,6 +23,9 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
     private CancellationTokenSource? _combinedTaskCancellation;
 #pragma warning restore CA2213
 
+    /// <summary>
+    /// Creates new <see cref="KafkaSubscriber{T}"/> based on provided config.
+    /// </summary>
     public KafkaSubscriber(KafkaConfigurationProvider kafkaConfig, IServiceScopeFactory scopeFactory, ILogger<KafkaSubscriber<T>> logger)
     {
         _consumer = new ConsumerBuilder<Null, string>(kafkaConfig.GetConsumerConfig()).Build();
@@ -30,6 +34,7 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
     }
 
     //todo: make sure this starts reading at a good place after reset
+    /// <inheritdoc/>
     public void Subscribe(IKafkaSubscriberHandler<T> newHandler)
     {
         _logger.LogDebug("Trying to subscribe to topic {Topic}", newHandler.Topic);
@@ -38,6 +43,7 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
         _logger.LogInformation("Subscribed to topic {Topic}", newHandler.Topic);
     }
 
+    /// <inheritdoc/>
     public async Task<bool> Unsubscribe()
     {
         if (handler is null) return false;
@@ -50,6 +56,7 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
         return true;
     }
 
+    /// <inheritdoc/>
     public void BeginHandle(CancellationToken cancellationToken)
     {
         if (handler is null) throw new InvalidOperationException("Handler has not yet been registered");
@@ -61,6 +68,7 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
         handleTask = Task.Run(() => Consume(_combinedTaskCancellation.Token), cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task StopHandle()
     {
         if (handleTask is null || handleTask.IsCompleted) return;
@@ -84,6 +92,10 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
         handleTask = null;
     }
 
+    /// <summary>
+    /// Function handling actual reading of messages. Processing is delegated to <see cref="handler"/>.
+    /// </summary>
+    /// <param name="cancellationToken">Token to indicate that message reading should be stopped.</param>
     protected virtual async Task Consume(CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
@@ -121,6 +133,9 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
         cancellationToken.ThrowIfCancellationRequested();
     }
 
+    /// <summary>
+    /// IAsyncDisposable implementation
+    /// </summary>
     protected virtual async Task DisposeAsync(bool disposing)
     {
         if (disposing)
@@ -133,6 +148,9 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
         }
     }
 
+    /// <summary>
+    /// IAsyncDisposable implementation
+    /// </summary>
     public async ValueTask DisposeAsync()
     {
         await DisposeAsync(true).ConfigureAwait(false);

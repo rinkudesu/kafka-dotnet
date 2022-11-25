@@ -2,6 +2,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Rinkudesu.Kafka.Dotnet.Base;
 
+/// <summary>
+/// Provides all information needed for Kafka connection.
+/// </summary>
 [ExcludeFromCodeCoverage]
 public class KafkaConfigurationProvider
 {
@@ -30,7 +33,9 @@ public class KafkaConfigurationProvider
     /// </summary>
     public string? ConsumerGroupId { get; }
 
+#pragma warning disable CS1591
     public KafkaConfigurationProvider(string serverAddress, string? user, string? password, string clientId, string? consumerGroupId = null)
+#pragma warning restore CS1591
     {
         ServerAddress = serverAddress;
         User = user;
@@ -39,6 +44,10 @@ public class KafkaConfigurationProvider
         ConsumerGroupId = consumerGroupId;
     }
 
+    /// <summary>
+    /// Creates <see cref="KafkaConfigurationProvider"/> based on values stored in ENV variables.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Throw when not all values are present in ENV.</exception>
     public static KafkaConfigurationProvider ReadFromEnv()
     {
         var serverAddress = Environment.GetEnvironmentVariable("RINKU_KAFKA_ADDRESS");

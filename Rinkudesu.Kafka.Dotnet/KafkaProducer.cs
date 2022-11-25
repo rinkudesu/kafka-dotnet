@@ -4,10 +4,15 @@ using Rinkudesu.Kafka.Dotnet.Exceptions;
 
 namespace Rinkudesu.Kafka.Dotnet;
 
+/// <inheritdoc/>
 public class KafkaProducer : IKafkaProducer
 {
     private readonly IProducer<Null, string> _producer;
 
+    /// <summary>
+    /// Creates new <see cref="KafkaProducer"/> based on provided <see cref="KafkaConfigurationProvider"/>.
+    /// </summary>
+    /// <param name="kafkaConfig"></param>
     public KafkaProducer(KafkaConfigurationProvider kafkaConfig)
     {
         _producer = new ProducerBuilder<Null, string>(kafkaConfig.GetProducerConfig()).Build();
@@ -60,6 +65,9 @@ public class KafkaProducer : IKafkaProducer
         return flushed;
     }
 
+    /// <summary>
+    /// IDisposable pattern implementation.
+    /// </summary>
     protected virtual void Dispose(bool disposing)
     {
         if (disposing)
@@ -68,6 +76,9 @@ public class KafkaProducer : IKafkaProducer
         }
     }
 
+    /// <summary>
+    /// IDisposable pattern implementation.
+    /// </summary>
     public void Dispose()
     {
         Dispose(true);

@@ -1,10 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+#pragma warning disable CS1591
 
 namespace Rinkudesu.Kafka.Dotnet.Base;
 
 [Serializable]
 [ExcludeFromCodeCoverage]
+[SuppressMessage("Documentation", "CS1591")]
 public abstract class KafkaException : Exception
 {
     protected KafkaException()

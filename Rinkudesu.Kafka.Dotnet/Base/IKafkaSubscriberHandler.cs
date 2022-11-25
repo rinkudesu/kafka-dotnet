@@ -2,8 +2,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Rinkudesu.Kafka.Dotnet.Base;
 
+/// <summary>
+/// Interface for handling kafka listener subscriptions.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public interface IKafkaSubscriberHandler<T> where T : GenericKafkaMessage
 {
+    /// <summary>
+    /// Topic for which the subscriber is listening.
+    /// </summary>
     string Topic { get; }
 
     /// <summary>

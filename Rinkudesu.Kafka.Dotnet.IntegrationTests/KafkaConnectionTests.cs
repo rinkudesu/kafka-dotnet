@@ -55,11 +55,12 @@ public sealed class KafkaConnectionTests : IAsyncDisposable
 
         _subscriber.Subscribe(_messageHandler);
         _subscriber.BeginHandle(handleCancellationToken.Token);
-        _producer.ProduceBulk(_messageHandler.Topic, messages, TimeSpan.FromSeconds(5));
+        var result = _producer.ProduceBulk(_messageHandler.Topic, messages, TimeSpan.FromSeconds(5));
         await Task.Delay(TimeSpan.FromSeconds(10), CancellationToken.None); //wait for messages to definitely circulate
         await _subscriber.Unsubscribe();
 
         Assert.Equal(msgCount, _messageHandler.HandleCount);
+        Assert.True(result);
     }
 
     public async ValueTask DisposeAsync()

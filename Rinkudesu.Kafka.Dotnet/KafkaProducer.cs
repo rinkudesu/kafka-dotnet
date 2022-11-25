@@ -53,7 +53,7 @@ public class KafkaProducer : IKafkaProducer
         }
         finally
         {
-            flushed = _producer.Flush(waitTime ?? TimeSpan.FromSeconds(10)) > 0;
+            flushed = _producer.Flush(waitTime ?? TimeSpan.FromSeconds(10)) == 0;
         }
 
         if (exceptions.Any()) throw new AggregateException(exceptions);

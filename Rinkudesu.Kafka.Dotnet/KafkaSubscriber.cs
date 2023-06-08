@@ -141,8 +141,8 @@ public class KafkaSubscriber<T> : IKafkaSubscriber<T> where T : GenericKafkaMess
         if (disposing)
         {
             await Unsubscribe().ConfigureAwait(false);
-            _consumer.Close();
-            _consumer.Dispose();
+            Helpers.EnsureDisposed(_consumer, c => c.Close());
+            Helpers.EnsureDisposed(_consumer, c => c.Dispose());
             _cancellationTokenSource?.Dispose();
             _combinedTaskCancellation?.Dispose();
         }

@@ -22,7 +22,7 @@ jobs:
         run: |
           docker compose -f ./Rinkudesu.Kafka.Dotnet.IntegrationTests/docker-compose.yml up -d
       - name: Cache SonarCloud packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/sonar/cache
           key: ${{ runner.os }}-sonar
@@ -33,7 +33,7 @@ jobs:
           dotnet-version: 6.0.x
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner
